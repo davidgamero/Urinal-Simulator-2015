@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title>Urinal Simulator 2k15</title>
+  <link rel="shortcut icon" href="res/favicon2.ico" type="image/x-icon">
+  <link rel="icon" href="res/favicon2.ico" type="image/x-icon">
+
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="1347.57">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  </style>
+  
+
+  <!-- jQuery -->
+  <script src="js/jquery.min.js"></script>
+
+  <!-- Bootstrap -->
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <script src="js/bootstrap.min.js"></script>
+
+  <link rel="stylesheet" type="text/css" href="urinalStyle.css">
+
+  <title>Urinal Sim 2k15</title>
+  
+  <script src='urinalSimulator.js'></script>
+</head>
+<body>
+    <div class='controlBox'>
+      <div class="input-group">
+        <span class="input-group-addon" id="controlsTitle">Controls</span>
+        
+      </div>
+    <br>
+    <div class="btn-group btn-group-justified" role="group" aria-label="...">
+      <div class="btn-group" role="group">
+        <button type="button" class="btn btn-danger" id="stopBtn">Stop</button>
+      </div>
+    <div class="btn-group" role="group">
+        <button type="button" class="btn btn-warning" id='stepBtn'>Step</button>
+      </div>
+    <div class="btn-group" role="group">
+        <button type="button" class="btn btn-success" id='goBtn'>Go</button>
+      </div>
+    </div>
+      
+    <br>
+    <div class="input-group">
+    <span class="input-group-addon" id="basic-addon1">Cycles/s</span>
+      <input type="text" class="form-control" id="delayBetweenCycles">
+      </div>
+    <br>
+    <div class="input-group">
+    <span class="input-group-addon" id="basic-addon2">Number of Urinals</span>
+      <input type="text" class="form-control" id="numberOfUrinals">
+      </div>
+    <br>
+    <div class="input-group">
+    <span class="input-group-addon" id="basic-addon3">Visitor Period</span>
+      <input type="text" class="form-control" id="userPeriod">
+      </div>
+    <br>
+    <div class="input-group">
+    <span class="input-group-addon" id="basic-addon4"> ^ Spread</span>
+      <input type="text" class="form-control" id="userPeriodSpread">
+      </div>
+    <br>
+    <div class="input-group">
+    <span class="input-group-addon" id="basic-addon5">Pee Duration</span>
+      <input type="text" class="form-control" id="userTimeToPee">
+      </div>
+    <br>
+    <div class="input-group">
+    <span class="input-group-addon" id="addon6"> ^ Spread</span>
+      <input type="text" class="form-control" id="userTimeToPeeSpread">
+      </div>
+    
+    </div>
+    </div>
+
+    
+    <div class='bigBox' id='bigBox'>
+      <div class='title'>Urinal Simulator 2K15</div> 
+      <div class='waitingLine' id='lineBox'>There ain't a line</div>     
+      <div class='bathroomBox' id='bathroomBox'>
+
+      </div>
+    </div>
+</body>
+</html>

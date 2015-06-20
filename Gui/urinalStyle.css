@@ -1,0 +1,57 @@
+.controlBox{
+	float: left;
+	width: 20%;
+	height: 100%;
+	padding: 1%;
+}
+
+.controlRow{
+	float: left;
+}
+
+.waitingLine(){
+	padding: 1%;
+	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+.title{
+	padding: 1%;
+	float:top;
+	text-align: center;
+	font-size: 30px;
+	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+.bigBox(){
+	float: right;
+	width: 80%;
+	height: 80%;
+	padding: 1px;
+}
+
+.bathroomBox{
+	float: right;
+	width: 80%;
+	height: 50%;
+	padding: 1%;
+}
+
+.textBox{
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+}
+
+.urinalBox{
+	padding: 1%;
+	float: left;
+}
+
+.timeToPeeRemainingBox{
+	text-align: center;
+
+}
+
+.urinalGraphicBox{
+	border-radius: 5px;
+}

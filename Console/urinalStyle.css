@@ -1,0 +1,23 @@
+.controlBox{
+	float: left;
+	width: 20%;
+	height: 100%;
+	padding: 1%;
+}
+
+.controlRow{
+	float: left;
+}
+
+.bathroomBox{
+	float: right;
+	width: 80%;
+	height: 100%;
+	padding: 1%;
+}
+
+.textBox{
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+}
