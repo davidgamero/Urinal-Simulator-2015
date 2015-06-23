@@ -9,7 +9,7 @@ var userTimeToPeeSpread = 2;
 var showTimeToPeeRemaining = false;
 
 //sound related config
-var soundEnabled = true; //preference for using sounds
+var soundEnabled = false; //preference for using sounds
 var maxFrequency = 880; //A5 is the max
 var minFrequency = 220; //A3 is the min
 var synthSound = "sin"; //type of synth sound
@@ -365,7 +365,7 @@ function initHTMLBathroom(){
         urinalGraphicBox.className = "urinalGraphicBox";
         urinalGraphicBox.id = "urinalGraphicBox" + i.toString();
         urinalGraphicBox.style.backgroundColor = unoccupiedUrinalBGColor;
-        urinalGraphicBox.innerHTML = "<br><br><br><br><br><br><div class=\"urinalUsesBox\" id=\"urinalUsesBox" + i.toString() + "\"></div><br><br><br><br><br><br>";
+        urinalGraphicBox.innerHTML = "<br><br><br><br><br><br><div class=\"urinalUsesBox\" id=\"urinalUsesBox" + i.toString() + "\">" + urinals[i].uses.toString() + "</div><br><br><br><br><br><br>";
         urinalBox.appendChild(urinalGraphicBox);
 
 
