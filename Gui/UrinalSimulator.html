@@ -13,10 +13,13 @@
     p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
     p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
   </style>
-  
+
 
   <!-- jQuery -->
   <script src="js/jquery.min.js"></script>
+
+  <!-- timbre -->
+  <script src="js/timbre.js"></script>
 
   <!-- Bootstrap -->
   <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -25,14 +28,15 @@
   <link rel="stylesheet" type="text/css" href="urinalStyle.css">
 
   <title>Urinal Sim 2k15</title>
-  
+
+  <!-- Urinal Sim -->
   <script src='urinalSimulator.js'></script>
 </head>
 <body>
     <div class='controlBox'>
       <div class="input-group">
         <span class="input-group-addon" id="controlsTitle">Controls</span>
-        
+
       </div>
     <br>
     <div class="btn-group btn-group-justified" role="group" aria-label="...">
@@ -46,7 +50,7 @@
         <button type="button" class="btn btn-success" id='goBtn'>Go</button>
       </div>
     </div>
-      
+
     <br>
     <div class="input-group">
     <span class="input-group-addon" id="basic-addon1">Cycles/s</span>
@@ -77,16 +81,27 @@
     <span class="input-group-addon" id="addon6"> ^ Spread</span>
       <input type="text" class="form-control" id="userTimeToPeeSpread">
       </div>
-    
+    <br>
+    <div class="btn-group" style="width: 100%">
+
+      <button type="button" class="btn btn-default dropdown-toggle waveTypeDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Sound <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" id="waveTypeDropdown">
+          <li id="saw" class="waveTypeDropdownOption">Saw</li>
+          <li id="square" class="waveTypeDropdownOption">Square</li>
+          <li id="sin" class="waveTypeDropdownOption">Sin</li>
+          <li id="cos" class="waveTypeDropdownOption">Cos</li>
+      </ul>
+      <button type="button" class="btn btn-primary toggleSoundButton" id="toggleSoundBtn">Toggle Sound</button>
     </div>
     </div>
 
-    
     <div class='bigBox' id='bigBox'>
-      <div class='title'>Urinal Simulator 2K15</div> 
+      <div class='title'>Urinal Simulator 2K15</div>
       <div class='credits'>Inspired by Grant and Phil at <a href='http://theobshop.com/'>The Object Shop</a></div>
       <div class='sourceLink'><a href='https://github.com/david340804/Urinal-Simulator-2015'>Check out my source code on GitHub</a></div>
-      <div class='waitingLine' id='lineBox'>There ain't a line</div>     
+      <div class='waitingLine' id='lineBox'>There ain't a line</div>
       <div class='bathroomBox' id='bathroomBox'>
 
       </div>

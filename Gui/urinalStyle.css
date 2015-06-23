@@ -19,6 +19,18 @@
 	float: left;
 }
 
+.toggleSoundButton{
+	width: 50%;
+}
+
+.waveTypeDropdown{
+	width: 50%;
+}
+
+.waveTypeDropdownOption{
+	padding-left: 20%;
+}
+
 .waitingLine{
 	padding: 1%;
 	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
@@ -56,6 +68,10 @@
 .urinalBox{
 	padding: 1%;
 	float: left;
+}
+
+.urinalUsesBox{
+	text-align: center;
 }
 
 .timeToPeeRemainingBox{

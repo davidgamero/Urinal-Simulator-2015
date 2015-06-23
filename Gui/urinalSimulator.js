@@ -7,6 +7,14 @@ var userTimeToPee = 7;//average time for each person to pee
 var userTimeToPeeSpread = 2;
 
 var showTimeToPeeRemaining = false;
+
+//sound related config
+var soundEnabled = true; //preference for using sounds
+var maxFrequency = 880; //A5 is the max
+var minFrequency = 220; //A3 is the min
+var synthSound = "sin"; //type of synth sound
+var soundDuration = 1000; //time each sound plays in ms
+
 var lastNumberOfUrinals; //tracking for invalid numbers of urinals
 
 var running = false; //whether we're running the live sim
@@ -17,6 +25,8 @@ var minNumberOfUrinals = 3; //no complexity with less than 3
 //HTML vars
 var unoccupiedUrinalBGColor = "lightgrey";
 var occupiedUrinalBGColor = "grey";
+var occupiedUrinalUsesTextColor = "white";
+var unoccupiedUrinalUsesTextColor = "black";
 
 //global tracking variables
 var time;//time in minutes
@@ -33,7 +43,7 @@ var urinals;
 
 //getting all the first values and populating urinals
 function init(){
-    
+
     time = 0;//time in minutes
     timeToNextVisitor = getNextVisitorTime();//get time to first visitor
     hadNewVisitor = false;
@@ -61,7 +71,7 @@ function newVisitor(){
     var newVisitorTimeToPee = Math.round(userTimeToPee - userTimeToPeeSpread + (Math.random() * userTimeToPeeSpread * 2));
 
     lineOfPeople.push({timeToPee:newVisitorTimeToPee,timeToPeeRemaining:newVisitorTimeToPee});
-    
+
 }
 
 //count how many neighbors adjacent to a specific urinal
@@ -97,12 +107,12 @@ function countNeighbors(index){
     }
     //spit back the number of neighbors
     return neighbors;
-	
+
 }
 
 //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/max
 function getMaxOfArray(numArray) {
-  return Math.max.apply(null, numArray);
+    return Math.max.apply(null, numArray);
 }
 
 //make an array of every number up to max
@@ -116,14 +126,29 @@ function increaasingArray(max){
 
 //delay function
 function sleep(milliseconds) {
-  var start = new Date().getTime();
-  for (var i = 0; i < 1e7; i++) {
-    if ((new Date().getTime() - start) > milliseconds){
-        break;
-    }else if(document.getElementById("goBtn").value = "false"){
-        break;
+    var start = new Date().getTime();
+    for (var i = 0; i < 1e7; i++) {
+        if ((new Date().getTime() - start) > milliseconds){
+            break;
+        }else if(document.getElementById("goBtn").value = "false"){
+            break;
+        }
     }
-  }
+}
+
+//play a sound for the new visitor
+function playVisitorSound(newVisitorIndex, numberOfUrinals){
+
+    //scale the urinal number to the frequency range
+    var soundFrequency = minFrequency + (maxFrequency - minFrequency) * (newVisitorIndex / (numberOfUrinals - 1));
+
+    //define the timbre sound object
+    var sound1 = T(synthSound, {freq:soundFrequency, mul:1.0});
+
+    //play the timbre sound
+    T("perc", {r:soundDuration}, sound1).on("ended", function() {
+      this.pause();
+    }).bang().play();
 }
 
 //decide where the new visitor goes
@@ -183,15 +208,30 @@ function placeNextVisitor(){
         urinals[newVisitorIndex].visitor = lineOfPeople.pop();
         urinals[newVisitorIndex].occupied = true;
         urinals[newVisitorIndex].uses++;
-    }
-    
 
+        //play the sound for the new visitor index if sound is enabled
+        if(soundEnabled){
+            playVisitorSound(newVisitorIndex, numberOfUrinals);
+        }
+    }
+
+
+}
+
+//toggle sound enabled
+function toggleSound(){
+    soundEnabled = !soundEnabled;
+}
+
+//set the new wave type for the sounds based on which element in the dropdown was clicked
+function waveTypeDropdownClicked(){
+    synthSound = this.id;
 }
 
 //console log the current state
 function printShit(time, urinals){
     outputSting = time.toString() + ' Line: ' + lineOfPeople.length + ' |';
-    
+
     for(i = 0;i < urinals.length;i++){
         //space from separator
         outputSting += ' ';
@@ -220,7 +260,7 @@ function printShit(time, urinals){
     }
 
     console.log(outputSting);
-    
+
 }
 
 //attach listeners and prepare HTML
@@ -236,6 +276,13 @@ function initHTMLControls(){
     document.getElementById("userTimeToPeeSpread").value = userTimeToPeeSpread;
 
     document.getElementById("numberOfUrinals").value = numberOfUrinals;
+
+    //attch listeners to all the sound <li> options in the wave type <ul> element
+    for(var i = 0; i < document.getElementById("waveTypeDropdown").children.length; i++){
+        document.getElementById("waveTypeDropdown").children[i].addEventListener("click",waveTypeDropdownClicked);
+    }
+
+    document.getElementById("toggleSoundBtn").addEventListener("click",toggleSound);
 }
 
 
@@ -249,13 +296,21 @@ function updateHTMLControls(){
     }else{
         document.getElementById("goBtn").innerHTML = "Go";
     }
-    
+
+    //change turn sound ON or OFF text
+    if(!soundEnabled){
+        //sound is off
+        document.getElementById("toggleSoundBtn").innerHTML = "Turn sound on";
+    }else{
+        document.getElementById("toggleSoundBtn").innerHTML = "Turn sound off"
+    }
+
 }
 
 //get values from HTML elements to update the params
 function getHTMLParams(){
     delayBetweenCycles = 1000 / document.getElementById("delayBetweenCycles").value;
- 
+
     userPeriod = document.getElementById("userPeriod").value;
     userPeriodSpread = document.getElementById("userPeriodSpread").value;
     userTimeToPee = document.getElementById("userTimeToPee").value;
@@ -270,7 +325,7 @@ function getHTMLParams(){
         }else{
             numberOfUrinals = document.getElementById("numberOfUrinals").value;
         }
-        
+
     }
 
     //number of urinals has changed, reset the simulation to avoid breaking everything
@@ -310,7 +365,7 @@ function initHTMLBathroom(){
         urinalGraphicBox.className = "urinalGraphicBox";
         urinalGraphicBox.id = "urinalGraphicBox" + i.toString();
         urinalGraphicBox.style.backgroundColor = unoccupiedUrinalBGColor;
-        urinalGraphicBox.innerHTML = "<br><br><br><br><br><br><br><br><br><br><br><br>";
+        urinalGraphicBox.innerHTML = "<br><br><br><br><br><br><div class=\"urinalUsesBox\" id=\"urinalUsesBox" + i.toString() + "\"></div><br><br><br><br><br><br>";
         urinalBox.appendChild(urinalGraphicBox);
 
 
@@ -327,7 +382,10 @@ function updateHTMLBathroom(){
         urinalBox = document.getElementById("urinalBox" + i.toString());
         urinalGraphicBox = document.getElementById("urinalGraphicBox" + i.toString());
         timeToPeeRemainingBox = document.getElementById("timeToPeeRemainingBox" + i.toString());
+        urinalUsesBox = document.getElementById("urinalUsesBox" + i.toString());
 
+        //update the urinalUsesBox
+        urinalUsesBox.innerHTML = urinals[i].uses;
 
         //set the bg color by occupied status
         if(urinals[i].occupied){
@@ -337,12 +395,17 @@ function updateHTMLBathroom(){
             //update the time to pee displayed
             timeToPeeRemainingBox.innerHTML = urinals[i].visitor.timeToPeeRemaining;
 
+            //update urinalUsesBox text color
+            urinalUsesBox.style.color = occupiedUrinalUsesTextColor;
+
         }else{
 
             urinalGraphicBox.style.backgroundColor = unoccupiedUrinalBGColor;
 
             timeToPeeRemainingBox.innerHTML = "_";
 
+            //update urinalUsesBox text color
+            urinalUsesBox.style.color = unoccupiedUrinalUsesTextColor;
         }
     }
 
@@ -359,6 +422,7 @@ function updateHTMLBathroom(){
             lineText = "There are " + lineOfPeople.length +" people in line";
             break;
     }
+
     document.getElementById("lineBox").innerHTML = lineText;
 }
 
@@ -415,7 +479,7 @@ function step(){
 function go(){
     running = true
     document.getElementById("goBtn").value = "true";
-    
+
 
 }
 //one call to update everything after a cycle delay
@@ -428,6 +492,7 @@ function cycle(){
         timeSinceLastCycle += 10;
         getHTMLParams();
     }
+
     updateHTMLControls();
 
 }
@@ -436,7 +501,7 @@ function cycle(){
 function restartSim(){
     init();
     initHTMLBathroom();
-    
+
 }
 
 
@@ -445,6 +510,9 @@ window.onload = function () {
     init();
     initHTMLControls();
     initHTMLBathroom();
+
+
+
 
     //run a new cycle every ten milliseconds
     window.setInterval(cycle,10);
