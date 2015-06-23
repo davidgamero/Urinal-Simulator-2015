@@ -8,6 +8,10 @@ var userTimeToPeeSpread = 2;
 
 var showTimeToPeeRemaining = false;
 
+//heatmap config and presets
+var heatmapEnabled = true;
+var heatmapColors = [["lightgreen","darkgreen"],["palegoldenrod","goldenrod"],["peachpuff","darkorange"],["lightpink","firebrick"]]; //HTML colors in order of ascending heat in [unoccupied,occupied} pairs
+
 //sound related config
 var soundEnabled = false; //preference for using sounds
 var maxFrequency = 880; //A5 is the max
@@ -110,6 +114,16 @@ function countNeighbors(index){
 
 }
 
+//get array with the uses corresponding to the urinals
+function getUsesArray(){
+    arr = new Array();
+    //push number of uses for each urinal to the array
+    for(var i = 0; i < urinals.length; i++){
+        arr.push(urinals[i].uses);
+    }
+    return arr;
+}
+
 //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/max
 function getMaxOfArray(numArray) {
     return Math.max.apply(null, numArray);
@@ -118,6 +132,7 @@ function getMaxOfArray(numArray) {
 //make an array of every number up to max
 function increaasingArray(max){
     arr = new Array();
+    //push every number 0-max onto the array
     for(var i = 0; i < max; i++){
         arr.push(i);
     }
@@ -263,6 +278,31 @@ function printShit(time, urinals){
 
 }
 
+function toggleHeatmap(){
+    heatmapEnabled = !heatmapEnabled;
+    //update to reflect changes
+//toggle the Heatmap
+    updateHTMLBathroom();
+}
+
+//get the heatmap color for urinal at index
+function getUrinalHeatmapColor(index){
+    var colorPairIndex = Math.round((heatmapColors.length - 1) * (urinals[index].uses/getMaxOfArray(getUsesArray()))); //scale the urinal at index's uses to the max uses and map that to the heat map colors
+    //catch math shenanigans
+    if(isNaN(colorPairIndex)){
+        colorPairIndex = 0;
+    }
+    //check occupied state
+    console.log(colorPairIndex);
+    if(urinals[index].occupied){
+        //return occupied color
+        return heatmapColors[colorPairIndex][1];
+    }else{
+        //return unoccupied color
+        return heatmapColors[colorPairIndex][0];
+    }
+}
+
 //attach listeners and prepare HTML
 function initHTMLControls(){
     document.getElementById("stopBtn").addEventListener("click",halt);
@@ -283,6 +323,8 @@ function initHTMLControls(){
     }
 
     document.getElementById("toggleSoundBtn").addEventListener("click",toggleSound);
+
+    document.getElementById("toggleHeatmapBtn").addEventListener("click",toggleHeatmap);
 }
 
 
@@ -364,7 +406,13 @@ function initHTMLBathroom(){
         var urinalGraphicBox = document.createElement("DIV");
         urinalGraphicBox.className = "urinalGraphicBox";
         urinalGraphicBox.id = "urinalGraphicBox" + i.toString();
-        urinalGraphicBox.style.backgroundColor = unoccupiedUrinalBGColor;
+
+        //set the background color of the urinalGraphicBox
+        if(heatmapEnabled){
+            urinalGraphicBox.style.backgroundColor = getUrinalHeatmapColor(i);
+        }else{
+            urinalGraphicBox.style.backgroundColor = unoccupiedUrinalBGColor;
+        }
         urinalGraphicBox.innerHTML = "<br><br><br><br><br><br><div class=\"urinalUsesBox\" id=\"urinalUsesBox" + i.toString() + "\">" + urinals[i].uses.toString() + "</div><br><br><br><br><br><br>";
         urinalBox.appendChild(urinalGraphicBox);
 
@@ -406,6 +454,11 @@ function updateHTMLBathroom(){
 
             //update urinalUsesBox text color
             urinalUsesBox.style.color = unoccupiedUrinalUsesTextColor;
+        }
+
+        //set the background color of the urinalGraphicBox to the heatmap color if enabled
+        if(heatmapEnabled){
+            urinalGraphicBox.style.backgroundColor = getUrinalHeatmapColor(i);
         }
     }
 
