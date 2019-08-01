@@ -229,12 +229,20 @@ function placeNextVisitor(){
             playVisitorSound(newVisitorIndex, numberOfUrinals);
         }
     }
+}
 
-
+function loadScript(url) {
+    var s = document.createElement("script");
+    s.type = "text/javascript";
+    s.src = url;
+    $("head").append(s);
 }
 
 //toggle sound enabled
 function toggleSound(){
+    if (typeof T == 'undefined'){
+        loadScript('js/timbre.js');
+    }
     soundEnabled = !soundEnabled;
 }
 
