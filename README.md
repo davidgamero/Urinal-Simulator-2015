@@ -1,4 +1,6 @@
 # Urinal-Simulator-2015
+<a href="http://davidgamero.github.io/Urinal-Simulator-2015/">DEMO<a>
+
 A simple behavioral model of men picking a urinal
 
 There are two main versions, a command line one and a gui based one.
